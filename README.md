@@ -2,7 +2,7 @@
 
 **A dark neon glow design system for Bootstrap and Tailwind CSS.**
 
-4 color palettes. 3 intensity levels. Pure CSS custom properties. Works with any framework or standalone.
+10 color palettes. 3 intensity levels. Pure CSS custom properties. Works with any framework or standalone.
 
 [![Gem Version](https://badge.fury.io/rb/neon_glow.svg)](https://rubygems.org/gems/neon_glow)
 
