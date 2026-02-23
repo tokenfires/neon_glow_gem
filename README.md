@@ -6,6 +6,14 @@
 
 [![Gem Version](https://badge.fury.io/rb/neon_glow.svg)](https://rubygems.org/gems/neon_glow)
 
+**[See the live demo](https://github.com/tokenfires/rails_neon_glow)** -- Kitchen sink showcases for both Tailwind and Bootstrap with all palettes and intensities.
+
+<p align="center">
+  <a href="https://github.com/tokenfires/rails_neon_glow">
+    <img src="https://raw.githubusercontent.com/tokenfires/rails_neon_glow/main/docs/gifs/home_800x560.gif" alt="Neon Glow demo -- palette switching">
+  </a>
+</p>
+
 ---
 
 ## Installation
