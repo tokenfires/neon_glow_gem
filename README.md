@@ -78,12 +78,36 @@ Add palette and intensity classes to your `<body>`:
 
 ## Palettes
 
-| Class | Vibe |
-|-------|------|
-| `neon-rainbow` | Full-spectrum neon. Arcade cabinets and light shows. |
-| `neon-unicorn` | Pastel rainbow. Dreamy, soft, ethereal. |
-| `neon-cinematic` | Electric blue + amber. The Blade Runner palette. |
-| `neon-pink` | Hot pink + magenta. A power color for everyone. |
+### Classic
+
+| Class | Palette | Vibe |
+|-------|---------|------|
+| `neon-rainbow` | **Rainbow** | Full-spectrum neon. Arcade cabinets and light shows. |
+| `neon-unicorn` | **Unicorn** | Pastel rainbow. Dreamy, soft, ethereal. |
+| `neon-cinematic` | **Cinematic** | Electric blue + amber. The Blade Runner palette. |
+| `neon-pink` | **Pink** | Hot pink + magenta. A power color for everyone. |
+
+### Decades (each with themed dark backgrounds)
+
+| Class | Palette | Vibe |
+|-------|---------|------|
+| `neon-retrowave` | **80's Retrowave** | Synthwave sunsets, neon grid lines, Outrun aesthetic. |
+| `neon-grunge` | **90's Grunge** | Flannel and feedback. Raw amber on dirty surfaces. |
+| `neon-y2k` | **2000's Y2K** | Frosted glass, chrome, bubblegum iridescence. |
+| `neon-social` | **2010's Social** | Platform colors. Notification pings and viral moments. |
+| `neon-cyberpunk` | **2020's Cyberpunk** | Toxic neon against corporate steel. Glitch aesthetic. |
+
+### Hardware
+
+| Class | Palette | Vibe |
+|-------|---------|------|
+| `neon-vfd` | **VFD Display** | Monochromatic phosphor glow with adjustable hue. |
+
+Add a VFD preset: `<body class="neon-glow-body neon-vfd neon-vfd-amber neon-medium">`
+
+Presets: `neon-vfd-red`, `neon-vfd-amber`, `neon-vfd-yellow`, `neon-vfd-green`, `neon-vfd-cyan` (default), `neon-vfd-blue`, `neon-vfd-purple`, `neon-vfd-pink`
+
+Or set any hue: `style="--ng-vfd-hue: 45"`
 
 ## Intensity Levels
 
