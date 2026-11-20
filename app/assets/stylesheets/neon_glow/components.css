@@ -277,6 +277,28 @@
     0 0 var(--ng-glow-blur) rgba(var(--ng-primary-rgb), calc(var(--ng-glow-opacity) * 0.2));
 }
 
+/* Cherenkov form tint: lightly wash form controls in the palette's
+   primary hue so they feel "seen through water" rather than generic
+   dark rectangles. Covers both Tailwind/plain HTML forms (.ng-input,
+   textarea) and Bootstrap forms (.form-control, .form-select).
+   Default state only; focus uses the normal strong Cherenkov blue. */
+.neon-cherenkov .ng-input,
+.neon-cherenkov .ng-select,
+.neon-cherenkov textarea,
+.neon-cherenkov .form-control,
+.neon-cherenkov .form-select {
+  border-color: rgba(var(--ng-primary-rgb), 0.55);
+  box-shadow:
+    inset 0 0 14px rgba(var(--ng-primary-rgb), 0.12),
+    0 0 0 1px rgba(var(--ng-primary-rgb), 0.15);
+}
+
+.neon-cherenkov .ng-input::placeholder,
+.neon-cherenkov textarea::placeholder,
+.neon-cherenkov .form-control::placeholder {
+  color: rgba(var(--ng-primary-rgb), 0.55);
+}
+
 /* ============================================================
    NEON BADGES / PILLS
    ============================================================ */
@@ -642,3 +664,954 @@
   );
   opacity: 0.5;
 }
+
+/* ============================================================
+   HARDWARE-THEME HEADING GLOW
+   The three Hardware palettes (VFD, Cherenkov, Nixie) represent
+   real physical light sources. Headings inside these palettes
+   should feel like *they are emitting light*, not just "text in
+   a theme color." Each palette gets its own glow character to
+   match its physical referent:
+     - VFD: calibrated instrument readout, moderate phosphor glow
+     - Cherenkov: volumetric underwater bloom, soft large-radius
+     - Nixie: layered parallax with mercury-violet fringe
+   ============================================================ */
+
+.neon-vfd h1,
+.neon-vfd h2,
+.neon-vfd h3,
+.neon-vfd .h1,
+.neon-vfd .h2,
+.neon-vfd .h3,
+.neon-vfd .h4,
+.neon-vfd .h5,
+.neon-vfd .display-1,
+.neon-vfd .display-2,
+.neon-vfd .display-3,
+.neon-vfd .display-4,
+.neon-vfd .display-5,
+.neon-vfd .display-6,
+.neon-vfd .ng-display,
+.neon-vfd .ng-hero {
+  text-shadow:
+    0 0 2px  rgba(var(--ng-primary-rgb), 0.85),
+    0 0 6px  rgba(var(--ng-primary-rgb), 0.55),
+    0 0 14px rgba(var(--ng-primary-rgb), 0.30);
+}
+
+.neon-cherenkov h1,
+.neon-cherenkov h2,
+.neon-cherenkov h3,
+.neon-cherenkov .h1,
+.neon-cherenkov .h2,
+.neon-cherenkov .h3,
+.neon-cherenkov .h4,
+.neon-cherenkov .h5,
+.neon-cherenkov .display-1,
+.neon-cherenkov .display-2,
+.neon-cherenkov .display-3,
+.neon-cherenkov .display-4,
+.neon-cherenkov .display-5,
+.neon-cherenkov .display-6,
+.neon-cherenkov .ng-display,
+.neon-cherenkov .ng-hero {
+  text-shadow:
+    0 0 4px  rgba(var(--ng-primary-rgb), 0.70),
+    0 0 14px rgba(var(--ng-primary-rgb), 0.45),
+    0 0 32px rgba(var(--ng-primary-rgb), 0.25),
+    0 0 64px rgba(var(--ng-primary-rgb), 0.12);
+}
+
+.neon-nixie h1,
+.neon-nixie h2,
+.neon-nixie h3,
+.neon-nixie .h1,
+.neon-nixie .h2,
+.neon-nixie .h3,
+.neon-nixie .h4,
+.neon-nixie .h5,
+.neon-nixie .display-1,
+.neon-nixie .display-2,
+.neon-nixie .display-3,
+.neon-nixie .display-4,
+.neon-nixie .display-5,
+.neon-nixie .display-6,
+.neon-nixie .ng-display,
+.neon-nixie .ng-hero {
+  text-shadow:
+    0 0 2px   rgba(var(--ng-primary-rgb), 0.85),
+    0 0 8px   rgba(var(--ng-primary-rgb), 0.55),
+    0 0 20px  rgba(var(--ng-primary-rgb), 0.30),
+    2px 3px 28px rgba(var(--ng-primary-rgb), 0.20),
+    0 6px 10px  rgba(var(--ng-nixie-mercury-rgb), 0.65),
+    0 14px 24px rgba(var(--ng-nixie-mercury-rgb), 0.35);
+}
+
+/* ============================================================
+   TYPOGRAPHY APPLICATION
+   Headings and display elements get --ng-font-display.
+   Subheads and accent elements get --ng-font-display-alt (which
+   defaults to --ng-font-display unless a theme overrides it).
+   Body text gets --ng-font-body. Code gets --ng-font-mono.
+   ============================================================ */
+
+.ng-card h1,
+.ng-hero,
+.ng-display {
+  font-family: var(--ng-font-display);
+}
+
+.ng-card h2,
+.ng-card h3,
+.ng-accent {
+  font-family: var(--ng-font-display-alt);
+}
+
+.ng-card p,
+.neon-glow-body {
+  font-family: var(--ng-font-body);
+}
+
+.ng-code,
+pre,
+code,
+kbd,
+samp {
+  font-family: var(--ng-font-mono);
+}
+
+/* ============================================================
+   NIXIE WIRE-GRID FRAME
+   The signature Nixie visual: thin vertical cathode wires and
+   horizontal support brackets behind the glowing digit. Recreates
+   the cathode stack visible through the glass of a lit Nixie tube.
+
+   Two entry points share the same visual effect:
+     1. .ng-nixie-digit utility class for manual application to
+        any element
+     2. Auto-application to .ng-card h1/h2 (and Bootstrap .h1/.h2/
+        .display-4/.display-5) inside .neon-nixie, so consumers
+        get the effect on card headings without having to opt in
+
+   Technique: repeating-linear-gradient for vertical wires, single
+   borders for horizontal brackets, z-index: -1 to sit behind the
+   parent's text. Pure CSS, no external assets.
+   ============================================================ */
+
+/* --- Nixie tube cell (shared base for .ng-nixie-digit and .ng-nixie-char) ---
+   Both classes produce one "tube cell" per element, containing a
+   left bracket, interior wires, right bracket, and top/bottom chassis
+   borders. They differ in padding/margin only:
+   - .ng-nixie-digit: manually applied to individual digits (e.g. the
+     Nixie Numerals demo row). Scoped to .neon-nixie so other palettes
+     don't show wire mesh on elements using this class.
+   - .ng-nixie-char: auto-applied by theme_switcher_controller.js to
+     wrap each non-space character of .ng-card headings when Nixie is
+     active. Spaces remain as plain text nodes so they don't get a
+     mesh cell — producing the visible "gap between tubes" effect.
+   Both are deactivated entirely when the palette isn't Nixie. */
+
+.neon-nixie .ng-nixie-digit {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 0.1em 0.2em;
+  /* Match the heading font so numerals in the Nixie demo row have the
+     same built-in-underline "connector wire" character as H1/H2 text.
+     Without this, numerals drift to B612 Mono (inherited from Nixie's
+     --ng-font-body/display tokens) and lose the wire-connector look. */
+  font-family: 'Montserrat Underline', 'Courier New', monospace;
+}
+
+.neon-nixie .ng-nixie-char {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 0.15em 0;
+  margin: 0 0.06em;
+}
+
+.neon-nixie .ng-nixie-digit::before,
+.neon-nixie .ng-nixie-char::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to right,
+    rgba(var(--ng-primary-rgb), 0.45) 0,
+    rgba(var(--ng-primary-rgb), 0.45) 1px,
+    transparent 1px,
+    transparent calc(25% - 0.5px),
+    rgba(var(--ng-primary-rgb), 0.18) calc(25% - 0.5px),
+    rgba(var(--ng-primary-rgb), 0.18) calc(25% + 0.5px),
+    transparent calc(25% + 0.5px),
+    transparent calc(50% - 0.5px),
+    rgba(var(--ng-primary-rgb), 0.18) calc(50% - 0.5px),
+    rgba(var(--ng-primary-rgb), 0.18) calc(50% + 0.5px),
+    transparent calc(50% + 0.5px),
+    transparent calc(75% - 0.5px),
+    rgba(var(--ng-primary-rgb), 0.18) calc(75% - 0.5px),
+    rgba(var(--ng-primary-rgb), 0.18) calc(75% + 0.5px),
+    transparent calc(75% + 0.5px),
+    transparent calc(100% - 1px),
+    rgba(var(--ng-primary-rgb), 0.45) calc(100% - 1px),
+    rgba(var(--ng-primary-rgb), 0.45) 100%
+  );
+  border-top:    1px solid rgba(var(--ng-primary-rgb), 0.40);
+  border-bottom: 1px solid rgba(var(--ng-primary-rgb), 0.40);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* --- Nixie-only display control ---
+   Hide elements unless the Nixie palette is active. Used to scope
+   Nixie-specific demo/reference content (like the Numerals row) so
+   it doesn't appear on palettes where the concept doesn't translate. */
+.ng-nixie-only {
+  display: none;
+}
+
+.neon-nixie .ng-nixie-only {
+  display: block;
+}
+
+/* --- Nixie heading font: Montserrat Underline (signature, Phase 2) ---
+   Nixie-specific override for H1/H2 headings inside Nixie cards.
+   Montserrat Underline has an underline stroke built into each
+   character's glyph; combined with the per-character wire-grid
+   wrapping it produces a PCB-trace-between-tube-bases visual — a
+   specific "neon sign with a rail running through it" register that
+   is the Nixie-only signature.
+   Scoped narrowly to H1/H2/.display-4/.display-5 — H3 and below keep
+   B612 Mono for readability. Separately, .ng-neon-tube (the universal
+   tube affordance from Phase 2.5) uses Megrim as its default on all
+   other palettes, so Montserrat Underline is now a Nixie signature
+   rather than being cross-palette. */
+.neon-nixie .ng-card h1,
+.neon-nixie .ng-card h2,
+.neon-nixie .ng-card .h1,
+.neon-nixie .ng-card .h2,
+.neon-nixie .ng-card .display-4,
+.neon-nixie .ng-card .display-5 {
+  font-family: 'Montserrat Underline', 'Courier New', monospace;
+}
+
+/* ============================================================
+   HARDWARE CHROME (Phase 4)
+
+   Palette-agnostic instrument-panel utility classes. These are pure
+   visual primitives — they don't care which palette is active. They
+   are auto-applied inside the .neon-vfd context so activating VFD
+   makes cards look like a real 1970s-80s Pioneer stereo readout.
+   Users on any palette can also apply them manually.
+
+   VFD is the only palette whose physical referent lived inside
+   bezeled hardware (audio components, synthesizer displays, cash
+   register readouts). Nixie tubes were individual glass envelopes;
+   Cherenkov is a phenomenon with no device. Auto-application is
+   deliberately VFD-only.
+   ============================================================ */
+
+/* --- .ng-instrument-frame ---
+   Hard-edged rectangular bezel with recessed inset shadow. The core
+   transform: soft card → instrument panel window. */
+.ng-instrument-frame {
+  border: 2px solid var(--ng-border);
+  border-radius: 0;
+  box-shadow:
+    inset 0 0 0 1px var(--ng-border-subtle),
+    inset 0 2px 8px rgba(0,0,0,0.6),
+    inset 0 -2px 8px rgba(0,0,0,0.4);
+  padding: 1rem 1.25rem;
+  background: var(--ng-surface);
+}
+
+/* --- .ng-chamfer ---
+   45° chamfered corners via clip-path. The era's closest
+   approximation to rounded corners. */
+.ng-chamfer {
+  clip-path: polygon(
+    0.5rem 0, calc(100% - 0.5rem) 0,
+    100% 0.5rem, 100% calc(100% - 0.5rem),
+    calc(100% - 0.5rem) 100%, 0.5rem 100%,
+    0 calc(100% - 0.5rem), 0 0.5rem
+  );
+}
+
+/* --- .ng-vfd-separator ---
+   Hairline horizontal rule with hard edges. Divides display regions
+   on an instrument panel. */
+.ng-vfd-separator {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--ng-border) 10%,
+    var(--ng-border) 90%,
+    transparent 100%
+  );
+  margin: 0.75rem 0;
+}
+
+/* --- .ng-vfd-label ---
+   Tiny all-caps hairline label for functional zones. The "TREBLE",
+   "BASS", "VOL" labels silk-screened onto real audio components. */
+.ng-vfd-label {
+  font-family: var(--ng-font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ng-text-muted);
+  font-weight: 400;
+}
+
+/* --- .ng-vu-segment ---
+   Trapezoidal fan-out segment for VU meter style indicators. Each
+   segment is slightly wider at the bottom, creating a fan when
+   multiple are laid out horizontally. */
+.ng-vu-segment {
+  clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+  background: var(--ng-primary);
+  box-shadow: 0 0 var(--ng-glow-blur) rgba(var(--ng-primary-rgb), var(--ng-glow-opacity));
+}
+
+/* --- VFD auto-application ---
+   When VFD is active, all .ng-card elements automatically receive
+   instrument-frame treatment. The consumer adds zero classes — just
+   switching the palette chrome-ifies everything.
+   Optional: set data-vfd-label="DISPLAY" (or any string) on an
+   .ng-card to render a tiny mono label in the top-left corner via
+   ::before. If the attribute is absent, no label renders. */
+.neon-vfd .ng-card {
+  position: relative;
+  border: 2px solid var(--ng-border);
+  border-radius: 0;
+  box-shadow:
+    inset 0 0 0 1px var(--ng-border-subtle),
+    inset 0 2px 8px rgba(0,0,0,0.6),
+    inset 0 -2px 8px rgba(0,0,0,0.4),
+    0 0 var(--ng-glow-blur) rgba(var(--ng-primary-rgb), calc(var(--ng-glow-opacity) * 0.3));
+}
+
+/* Suppress the border-glow pseudo-elements under VFD. The instrument
+   frame replaces the soft gradient glow, and we need ::before free
+   for data-vfd-label content. Without this, .ng-border-glow's
+   ::before (gradient border) stomps the label — CSS only allows one
+   ::before per element. */
+.neon-vfd .ng-border-glow::before,
+.neon-vfd .ng-border-glow::after {
+  display: none;
+}
+
+/* The label rule must fully reset properties inherited from the
+   lower-specificity .ng-border-glow::before rule: z-index (-1 puts
+   the pseudo behind the card), background (gradient), opacity (0.7),
+   inset (-1px stretches it full-bleed). Without these resets the
+   label text renders but is invisible behind the card content. */
+.neon-vfd .ng-card[data-vfd-label]::before {
+  display: block;
+  content: attr(data-vfd-label);
+  position: absolute;
+  top: 0.5rem;
+  left: 0.75rem;
+  right: auto;
+  bottom: auto;
+  z-index: 1;
+  background: none;
+  opacity: 1;
+  border-radius: 0;
+  font-family: var(--ng-font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ng-text-muted);
+  font-weight: 400;
+  pointer-events: none;
+}
+
+/* ============================================================
+   RETROWAVE CHROME (Phase 5a)
+
+   80s synthwave album-cover geometry. Four palette-agnostic utilities
+   that compose the visual vocabulary of a gatefold inner sleeve:
+   chrome-outlined headlines, CRT scanline overlay, perspective grid
+   floor, and horizon-split gradient.
+
+   The utilities use palette tokens (--ng-primary-rgb, --ng-secondary-rgb)
+   so they produce palette-colored output on any palette, but they're
+   designed for Retrowave's magenta + cyan. Auto-application inside
+   .neon-retrowave applies chrome text and scanlines; grid and horizon
+   are opt-in full-background elements.
+   ============================================================ */
+
+/* --- .ng-retrowave-chrome ---
+   Metallic text-shadow stack creating a chrome outline effect on
+   display text. Multiple hard-edged shadow layers simulate metallic
+   reflection: white highlight top-left, dark shadow bottom-right,
+   colored reflections (cyan top, magenta bottom) from the palette's
+   primary and secondary. The last layers add soft neon bloom.
+   The hard 0-blur layers are what give it the metallic sharpness;
+   real 80s chrome lettering was screen-printed with hard reflective
+   edges, not soft gradients. */
+.ng-retrowave-chrome {
+  text-shadow:
+    -1px -1px 0    rgba(255, 255, 255, 0.8),
+     1px  1px 0    rgba(0,   0,   0,   0.6),
+     0   -2px 0    rgba(var(--ng-secondary-rgb), 0.7),
+     0    2px 0    rgba(var(--ng-primary-rgb), 0.7),
+    -2px  0   4px  rgba(var(--ng-secondary-rgb), 0.4),
+     2px  0   4px  rgba(var(--ng-primary-rgb), 0.4),
+     0    0   12px rgba(var(--ng-primary-rgb), 0.3);
+}
+
+/* --- .ng-retrowave-scanlines ---
+   CRT scanline overlay via background-image layer. 2px clear lines
+   alternating with 1px dark lines at very low opacity (0.1) so the
+   texture reads as CRT without hurting text readability.
+   Uses background-image (not ::after) to avoid pseudo-element
+   collisions with .ng-border-glow — the gradient border + bloom is
+   part of the Retrowave aesthetic and must NOT be suppressed. */
+.ng-retrowave-scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 3px
+  );
+}
+
+/* --- .ng-retrowave-grid ---
+   Perspective grid floor vanishing to a horizon. Pure CSS: a flat
+   grid pattern on a ::before pseudo-element, tilted into perspective
+   via CSS transform. The grid occupies the bottom 60% of the element,
+   leaving the top as dark sky.
+   Opt-in — apply to the element that should be the floor. Typically
+   a full-width container or page background section. */
+.ng-retrowave-grid {
+  position: relative;
+  overflow: hidden;
+}
+
+.ng-retrowave-grid::before {
+  content: "";
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: 0;
+  height: 70%;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(var(--ng-primary-rgb), 0.35) 0px,
+      rgba(var(--ng-primary-rgb), 0.35) 1px,
+      transparent 1px,
+      transparent 60px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(var(--ng-primary-rgb), 0.35) 0px,
+      rgba(var(--ng-primary-rgb), 0.35) 1px,
+      transparent 1px,
+      transparent 40px
+    );
+  transform: perspective(400px) rotateX(55deg);
+  transform-origin: center bottom;
+  pointer-events: none;
+}
+
+/* --- .ng-retrowave-horizon ---
+   Hard-edged horizon-split gradient with the classic sun-setting-
+   into-grid look. Dark purple sky above, bright sun band at the
+   horizon, fade to deep ground below. Uses palette colors via tokens
+   for the sun glow so it adapts to non-Retrowave palettes if someone
+   applies it manually. */
+.ng-retrowave-horizon {
+  background: linear-gradient(
+    to bottom,
+    #1a0033   0%,
+    #2a0050  35%,
+    rgba(var(--ng-primary-rgb), 0.6) 46%,
+    rgba(var(--ng-primary-rgb), 0.9) 49%,
+    rgba(var(--ng-accent-rgb), 0.8) 50%,
+    rgba(var(--ng-primary-rgb), 0.9) 51%,
+    rgba(var(--ng-primary-rgb), 0.6) 54%,
+    #0d0018  65%,
+    #0a0010 100%
+  );
+}
+
+/* --- Retrowave-only display control ---
+   Same pattern as .ng-nixie-only — hides demo/reference content
+   unless the Retrowave palette is active. */
+.ng-retrowave-only {
+  display: none;
+}
+
+.neon-retrowave .ng-retrowave-only {
+  display: block;
+}
+
+/* --- Retrowave auto-application ---
+   When Retrowave is active:
+   - Card headings get the chrome text effect automatically.
+   - Cards get the CRT scanline overlay as a background-image layer.
+   Uses background-image (not ::after) so .ng-border-glow's pseudo-
+   elements are preserved — the gradient border + bloom is PART of
+   the Retrowave aesthetic and should NOT be suppressed. The scanline
+   gradient layers on top of background-color because .ng-card sets
+   background-color (not the background shorthand). */
+.neon-retrowave .ng-card {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.1) 2px,
+    rgba(0, 0, 0, 0.1) 3px
+  );
+}
+
+.neon-retrowave .ng-card h1,
+.neon-retrowave .ng-card h2,
+.neon-retrowave .ng-card .h1,
+.neon-retrowave .ng-card .h2,
+.neon-retrowave .ng-card h3 {
+  text-shadow:
+    -1px -1px 0    rgba(255, 255, 255, 0.8),
+     1px  1px 0    rgba(0,   0,   0,   0.6),
+     0   -2px 0    rgba(var(--ng-secondary-rgb), 0.7),
+     0    2px 0    rgba(var(--ng-primary-rgb), 0.7),
+    -2px  0   4px  rgba(var(--ng-secondary-rgb), 0.4),
+     2px  0   4px  rgba(var(--ng-primary-rgb), 0.4),
+     0    0   12px rgba(var(--ng-primary-rgb), 0.3);
+}
+
+/* ============================================================
+   CYBERPUNK CHROME (Phase 5b)
+
+   "Partially corrupted holographic interface." These interfaces
+   were engineered to be corporate-clean and precise. What we see is
+   the degradation — holographic projector aging, signal interference,
+   framebuffer bad sectors. Every utility starts from engineered
+   geometry and introduces corruption.
+
+   No pseudo-elements used (Gotcha #8 — ng-border-glow uses both).
+   Panel = clip-path on the element itself. Glitch = text-shadow +
+   keyframe animation. All palette-agnostic via tokens.
+   ============================================================ */
+
+/* --- .ng-cyberpunk-panel ---
+   Asymmetric clip-path: top-right heavily notched (1.5rem), bottom-
+   right lightly notched (0.5rem), left side square. Reads as
+   "manufactured rectangular, rendering distorted on one side." The
+   asymmetry is the tell — a working system would clip symmetrically;
+   this one has a render error on the right edge.
+   ng-border-glow pseudo-elements clip to this shape, so the glow
+   conforms to the panel frame. Intentional: a holographic panel's
+   glow follows its own frame. */
+.ng-cyberpunk-panel {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 1.5rem) 0,
+    100% 1.5rem,
+    100% calc(100% - 0.5rem),
+    calc(100% - 0.5rem) 100%,
+    0 100%
+  );
+}
+
+/* --- .ng-cyberpunk-glitch ---
+   RGB channel-split text-shadow. The display still shows the right
+   content but the color channels have drifted apart — like a
+   projector with misaligned optics. Red shifts left, cyan shifts
+   right. Offset amount tuneable via --ng-glitch-offset.
+   On hover: a jittery flicker animation (steps(1) = instant
+   transitions, glitches SNAP not ease). At rest: no effect, because
+   a constant glitch is exhausting to look at (per spec).
+   Reduced-motion fallback: static offset, no animation. */
+.ng-cyberpunk-glitch {
+  --ng-glitch-offset: 2px;
+  transition: text-shadow 0.05s;
+}
+
+.ng-cyberpunk-glitch:hover {
+  animation: ng-cyberpunk-glitch-flicker 0.4s steps(1) infinite;
+}
+
+@keyframes ng-cyberpunk-glitch-flicker {
+  0%, 100% {
+    text-shadow:
+      calc(var(--ng-glitch-offset) * -1) 0 rgba(255, 0, 0, 0.7),
+      var(--ng-glitch-offset)            0 rgba(0, 255, 255, 0.7);
+  }
+  25% {
+    text-shadow:
+      calc(var(--ng-glitch-offset) * -1.5) 1px rgba(255, 0, 0, 0.9),
+      calc(var(--ng-glitch-offset) * 0.5)  -1px rgba(0, 255, 255, 0.5);
+  }
+  50% {
+    text-shadow:
+      calc(var(--ng-glitch-offset) * -0.5) -1px rgba(255, 0, 0, 0.5),
+      calc(var(--ng-glitch-offset) * 1.5)  0    rgba(0, 255, 255, 0.9);
+  }
+  75% {
+    text-shadow:
+      calc(var(--ng-glitch-offset) * -1) 1px rgba(255, 0, 0, 0.8),
+      var(--ng-glitch-offset)           -1px rgba(0, 255, 255, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ng-cyberpunk-glitch:hover {
+    animation: none;
+    text-shadow:
+      calc(var(--ng-glitch-offset) * -1) 0 rgba(255, 0, 0, 0.7),
+      var(--ng-glitch-offset)            0 rgba(0, 255, 255, 0.7);
+  }
+}
+
+/* --- .ng-cyberpunk-shear ---
+   Small skewX tilt implying a holographic projection that's not
+   quite perpendicular to the viewer. Barely perceptible. Opt-in
+   because skewing shifts the bounding box and can surprise layouts. */
+.ng-cyberpunk-shear {
+  transform: skewX(-1deg);
+}
+
+/* --- .ng-cyberpunk-label ---
+   Tiny HUD annotation: system diagnostic text the UI is exposing
+   because the interface layer has partially failed. Uses the
+   display-alt font (Rubik Glitch under Cyberpunk) so the labels
+   carry the same corruption aesthetic as headlines. */
+.ng-cyberpunk-label {
+  font-family: var(--ng-font-display-alt);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgb(var(--ng-primary-rgb));
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+/* --- Cyberpunk-only display control --- */
+.ng-cyberpunk-only {
+  display: none;
+}
+
+.neon-cyberpunk .ng-cyberpunk-only {
+  display: block;
+}
+
+/* --- Cyberpunk auto-application ---
+   Cards gain asymmetric panel clip-path + holographic internal glow.
+   Headings gain the glitch effect on hover.
+
+   IMPORTANT: clip-path creates a stacking context, which has two
+   consequences for ng-border-glow:
+   1. The ::before gradient (z-index: -1) gets trapped INSIDE the
+      card's stacking context and paints as a visible gradient fill
+      over the card background → illegible text.
+   2. The ::after blur glow (inset: -2px, extends past card edge)
+      gets clipped away → no visible border glow.
+
+   Fix: suppress border-glow pseudo-elements under Cyberpunk and
+   replace with an INSET glow. This fits the referent better anyway:
+   holograms don't bleed light outward from frame edges (that's what
+   neon does). A holographic panel glows INWARD — the projection
+   surface is self-illuminated. The inset box-shadow survives inside
+   the clip region because it paints within the element's border box. */
+.neon-cyberpunk .ng-border-glow::before,
+.neon-cyberpunk .ng-border-glow::after {
+  display: none;
+}
+
+.neon-cyberpunk .ng-card {
+  clip-path: polygon(
+    0 0,
+    calc(100% - 1.5rem) 0,
+    100% 1.5rem,
+    100% calc(100% - 0.5rem),
+    calc(100% - 0.5rem) 100%,
+    0 100%
+  );
+  border: 1px solid rgba(var(--ng-primary-rgb), 0.35);
+  box-shadow:
+    inset 0 0 30px rgba(var(--ng-primary-rgb), 0.08),
+    inset 0 0 6px  rgba(var(--ng-primary-rgb), 0.2);
+}
+
+.neon-cyberpunk .ng-card h1,
+.neon-cyberpunk .ng-card h2,
+.neon-cyberpunk .ng-card .h1,
+.neon-cyberpunk .ng-card .h2,
+.neon-cyberpunk .ng-card h3 {
+  --ng-glitch-offset: 2px;
+}
+
+.neon-cyberpunk .ng-card h1:hover,
+.neon-cyberpunk .ng-card h2:hover,
+.neon-cyberpunk .ng-card .h1:hover,
+.neon-cyberpunk .ng-card .h2:hover,
+.neon-cyberpunk .ng-card h3:hover {
+  animation: ng-cyberpunk-glitch-flicker 0.4s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neon-cyberpunk .ng-card h1:hover,
+  .neon-cyberpunk .ng-card h2:hover,
+  .neon-cyberpunk .ng-card .h1:hover,
+  .neon-cyberpunk .ng-card .h2:hover,
+  .neon-cyberpunk .ng-card h3:hover {
+    animation: none;
+    text-shadow:
+      -2px 0 rgba(255, 0, 0, 0.7),
+       2px 0 rgba(0, 255, 255, 0.7);
+  }
+}
+
+/* ============================================================
+   GRUNGE CHROME (Phase 5c)
+
+   90s zine culture. Photocopied flyers stapled to telephone poles,
+   cut-and-paste layouts, Xerox halation, ink-bleed on cheap paper.
+   The central design tension: CSS produces clean geometry by default,
+   so every deliberate choice must introduce IMPRECISION — non-round
+   rotation angles, hand-drawn SVG paths instead of polygons, noise
+   overlays, asymmetric values. The line between "deliberately rough"
+   and "broken" is thin; these utilities live on the right side of it.
+
+   No pseudo-elements used (Gotcha #8). Transform creates a stacking
+   context which would trap ng-border-glow's ::before inside the
+   card (same failure mode as Cyberpunk), so border-glow is
+   suppressed under Grunge and replaced with a hard-edged paper-on-
+   wall offset shadow. Grunge cards aren't lit from within — they're
+   paper objects in dim rooms.
+   ============================================================ */
+
+/* --- .ng-grunge-noise ---
+   Procedural noise texture via inlined SVG feTurbulence filter.
+   Low baseFrequency = coarser grain; numOctaves=2 adds visual depth.
+   Applied as background-image layer (NOT pseudo-element) so it
+   composes with any existing background-color. Low opacity keeps
+   the noise readable as texture without eroding text legibility. */
+.ng-grunge-noise {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.5  0 0 0 0 0.35  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+/* --- .ng-grunge-rotate ---
+   Custom-property-driven rotation. Default 0deg so the utility is
+   inert until an angle is set. Non-round angle values preserve the
+   handmade feel — humans stapling flyers don't align to integers. */
+.ng-grunge-rotate {
+  --ng-grunge-angle: 0deg;
+  transform: rotate(var(--ng-grunge-angle));
+}
+
+/* --- .ng-grunge-torn ---
+   SVG mask with an irregular hand-drawn bottom edge. Opt-in because
+   tearing every card would be visual noise. CSS clip-path polygons
+   look too regular for torn paper; SVG path nodes allow varying
+   tooth sizes and asymmetric spacing. The mask covers the full top
+   of the element and tears the bottom ~8% with irregular teeth. */
+.ng-grunge-torn {
+  -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M 0,0 L 100,0 L 100,94 L 96,98 L 92,93 L 87,99 L 83,92 L 79,97 L 74,93 L 70,99 L 65,94 L 61,98 L 57,92 L 52,97 L 48,93 L 43,99 L 38,94 L 34,98 L 29,93 L 25,97 L 20,92 L 16,99 L 11,94 L 7,98 L 3,93 L 0,97 Z' fill='black'/></svg>");
+          mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M 0,0 L 100,0 L 100,94 L 96,98 L 92,93 L 87,99 L 83,92 L 79,97 L 74,93 L 70,99 L 65,94 L 61,98 L 57,92 L 52,97 L 48,93 L 43,99 L 38,94 L 34,98 L 29,93 L 25,97 L 20,92 L 16,99 L 11,94 L 7,98 L 3,93 L 0,97 Z' fill='black'/></svg>");
+  -webkit-mask-size: 100% 100%;
+          mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+}
+
+/* --- .ng-grunge-stamp ---
+   Rubber-stamped text on paper. Rough border, rotation, ink-uneven
+   via noise overlay. Inline-block so it wraps just the text and
+   reads as a label, not a container. */
+.ng-grunge-stamp {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border: 2px solid rgba(var(--ng-primary-rgb), 0.7);
+  color: rgba(var(--ng-primary-rgb), 0.85);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transform: rotate(-1.7deg);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.3'/></svg>");
+  background-size: 100px 100px;
+}
+
+/* --- Grunge-only display control --- */
+.ng-grunge-only {
+  display: none;
+}
+
+.neon-grunge .ng-grunge-only {
+  display: block;
+}
+
+/* --- Grunge auto-application ---
+   Suppress border-glow (transform stacking context traps ::before
+   as a visible gradient fill — same failure as Cyberpunk). Replace
+   with hard-edged paper-on-wall offset shadow. Cards get noise
+   overlay automatically. Rotation cycles four non-round angles via
+   nth-child so a grid of cards reads as "wall of flyers, none
+   quite straight, no two adjacent the same angle."
+
+   Four-cycle pattern (4n+1/+2/+3/+0) with irrational-looking degrees:
+     1st: -1.2deg
+     2nd:  0.7deg
+     3rd: -0.5deg
+     4th:  1.5deg
+   The cycle never places two adjacent cards at the same angle,
+   which reads as handmade rather than alternating-pattern. */
+.neon-grunge .ng-border-glow::before,
+.neon-grunge .ng-border-glow::after {
+  display: none;
+}
+
+.neon-grunge .ng-card {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.5  0 0 0 0 0.35  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  border: 1px solid rgba(var(--ng-primary-rgb), 0.3);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.5);
+}
+
+.neon-grunge .ng-card:nth-child(4n+1) { transform: rotate(-1.2deg); }
+.neon-grunge .ng-card:nth-child(4n+2) { transform: rotate( 0.7deg); }
+.neon-grunge .ng-card:nth-child(4n+3) { transform: rotate(-0.5deg); }
+.neon-grunge .ng-card:nth-child(4n)   { transform: rotate( 1.5deg); }
+
+/* --- Grunge marginalia: annotation without content ---
+   Sparse pen-mark accents sprinkled across the card grid. The
+   gesture of annotation without any actual annotation — someone
+   scrawled on this but didn't mean it. Generational-irony texture:
+   the shape of caring, untethered from care.
+
+   Two marks, applied via nth-child so they hit ~1 in 3 cards,
+   alternating color, never adjacent:
+     - Red scribbled cross-out (wavy sharpie stroke, top-right)
+     - Green incomplete hand-drawn circle (pen-arc, bottom-left)
+
+   Both are composed with the existing noise + card-background via
+   the multi-layer background shorthand. SVG paths use hardcoded
+   Grunge palette rgb values (90,138,74 olive + 168,50,50 dirty red)
+   because CSS custom properties don't resolve inside data-URI
+   background-images. If the Grunge palette ever re-tunes success/
+   danger, update these hardcoded values too.
+
+   These are scoped to .neon-grunge, so re-tuning affects Grunge only. */
+.neon-grunge .ng-card:nth-child(6n+3),
+.neon-grunge .ng-card[data-grunge-mark="scribble"] {
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 40'><path d='M 5 15 Q 15 22 25 12 Q 35 26 45 14 Q 52 25 55 18' stroke='rgba(168,50,50,0.55)' stroke-width='2.5' fill='none' stroke-linecap='round'/><path d='M 8 28 Q 18 20 28 30 Q 38 22 48 32' stroke='rgba(168,50,50,0.45)' stroke-width='2' fill='none' stroke-linecap='round'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.5  0 0 0 0 0.35  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+  background-position: calc(100% - 1rem) 1rem, 0 0;
+  background-size: 3rem 2rem, 200px 200px;
+  background-repeat: no-repeat, repeat;
+}
+
+.neon-grunge .ng-card:nth-child(6n+5) {
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'><path d='M 38 10 Q 50 20 48 32 Q 42 46 28 46 Q 12 44 8 30 Q 7 18 18 12' stroke='rgba(90,138,74,0.6)' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.5  0 0 0 0 0.35  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+  background-position: 1rem calc(100% - 1rem), 0 0;
+  background-size: 2.5rem 2.5rem, 200px 200px;
+  background-repeat: no-repeat, repeat;
+}
+
+/* Opt-in circle uses a different corner than the nth-child auto-apply.
+   Reason: the auto-apply lives on content-heavy homepage cards where
+   the bottom-left corner is empty whitespace. Kitchen-sink cards like
+   Forms and Buttons have interactive controls clustered in that exact
+   corner (submit buttons, first button in a group), which swallows the
+   mark entirely. Bottom-RIGHT is reliably empty on both card types. */
+.neon-grunge .ng-card[data-grunge-mark="circle"] {
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'><path d='M 38 10 Q 50 20 48 32 Q 42 46 28 46 Q 12 44 8 30 Q 7 18 18 12' stroke='rgba(90,138,74,0.6)' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>"),
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.5  0 0 0 0 0.35  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+  background-position: calc(100% - 1rem) calc(100% - 1rem), 0 0;
+  background-size: 2.5rem 2.5rem, 200px 200px;
+  background-repeat: no-repeat, repeat;
+}
+
+/* Explicit opt-out — wins over nth-child accents. Used when an
+   nth-child position happens to place an accent somewhere that
+   crosses the line from "incidental residue" into "visible pattern."
+   Sometimes three marks in sequence breaks the whatever-feel even
+   if each individual mark is right. */
+.neon-grunge .ng-card[data-grunge-mark="none"] {
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0.6  0 0 0 0 0.5  0 0 0 0 0.35  0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/></svg>");
+  background-position: 0 0;
+  background-size: 200px 200px;
+  background-repeat: repeat;
+}
+
+/* ============================================================
+   NEON TUBE AFFORDANCE (Phase 2.5, re-pointed Phase 3)
+
+   .ng-neon-tube — palette-agnostic utility that makes any element
+   read as literal neon signage. Megrim is a constructivist display
+   face whose thin geometric letterforms ARE tubes: each letter is
+   constructed from single-line strokes the way actual neon signs are
+   physically constructed (lengths of glass tubing bent into letter
+   shapes). That is the most literal "this is a neon tube" register
+   possible as typography.
+
+   Color comes from --ng-primary-rgb, so the same utility produces a
+   distinct visual register for each of the 12 palettes:
+     - Retrowave: hot magenta/cyan tube letters
+     - Cyberpunk: toxic green tube letters with data-corrupt glow
+     - Cinematic: amber Blade Runner title-card tube
+     - Cherenkov: deep blue tubes with pool-of-water Overdrive bloom
+     - Nixie:     same Megrim tube letters — Nixie's wire-grid and
+                  Montserrat Underline treatment stay on palette-
+                  native scopes (.ng-card h1/h2, .ng-nixie-digit)
+                  and do NOT apply to .ng-neon-tube
+
+   Phase 2 (Nixie's original H1/H2 experiment) used Montserrat
+   Underline. Phase 2.5 promoted Montserrat Underline to be the
+   universal tube font across all palettes AND applied Nixie's
+   wire-grid character-wrap to the tube when Nixie was active. Both
+   were propagation rather than design — a universal utility can't
+   behave differently for one palette. Phase 3 replaces the font
+   with Megrim universally and scopes the wire-grid wrap to Nixie's
+   own card-heading selectors only. Universal utilities are universal.
+
+   Text-shadow produces a soft outer glow so the tube reads as
+   illuminated, not just shaped. Intensity-responsive via tokens.
+   ============================================================ */
+
+/* Doubled class on the selector is a specificity hack (0,2,0) that
+   deliberately beats palette-specific heading rules like
+   .neon-cherenkov h1 (0,1,1) and .neon-nixie h1 (0,1,1). Without
+   this, the palette-specific hardcoded text-shadows win and the
+   tube's intensity-responsive glow never applies — the hero stops
+   responding to the intensity dropdown. The doubled selector is
+   visually identical to .ng-neon-tube; only specificity differs. */
+.ng-neon-tube.ng-neon-tube {
+  font-family: 'Megrim', 'Courier New', monospace;
+  color: rgb(var(--ng-primary-rgb));
+  /* Four-layer glow tied to the intensity system: blur radius and
+     opacity both come from intensity tokens (--ng-glow-text-blur and
+     --ng-glow-opacity), so switching intensity re-reads through.
+     Overdrive on Cherenkov produces the "glow-through-water" bloom
+     the palette was designed for — the 4x outer halo spreads ~110px
+     of soft blue past the text on Overdrive, retreats to ~16px on
+     Subtle. Extra wide outer layer (4x blur, 0.25x opacity) is what
+     gives the luminous-pool character; a three-layer version reads
+     as "halo around solid letters" rather than "gas lit inside a
+     tube." */
+  text-shadow:
+    0 0 calc(var(--ng-glow-text-blur) * 0.5) rgba(var(--ng-primary-rgb), var(--ng-glow-opacity)),
+    0 0 var(--ng-glow-text-blur)             rgba(var(--ng-primary-rgb), calc(var(--ng-glow-opacity) * 0.70)),
+    0 0 calc(var(--ng-glow-text-blur) * 2.5) rgba(var(--ng-primary-rgb), calc(var(--ng-glow-opacity) * 0.40)),
+    0 0 calc(var(--ng-glow-text-blur) * 4)   rgba(var(--ng-primary-rgb), calc(var(--ng-glow-opacity) * 0.25));
+}
+
+/* Note: .ng-neon-tube is NOT character-wrapped by the controller,
+   on any palette. The per-character wire-grid belongs to Nixie's own
+   card-heading scope and the .ng-nixie-digit demo utility, not to
+   the palette-agnostic tube. See Gotcha #7 in CLAUDE.md. */

@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.email         = []
 
   spec.summary       = "A dark neon glow design system for Bootstrap and Tailwind CSS"
-  spec.description   = "4 color palettes (Rainbow, Unicorn, Cinematic, Pink), 3 intensity " \
-                        "levels (Subtle, Medium, Intense), and a full component library with " \
+  spec.description   = "12 color palettes including Cherenkov and Nixie, 4 intensity " \
+                        "levels (Subtle, Medium, Intense, Overdrive), and a component library with " \
                         "glowing buttons, gradient borders, neon text, and more. Pure CSS " \
                         "custom properties -- works with any framework or standalone."
   spec.homepage      = "https://github.com/tokenfires/neon_glow_gem"

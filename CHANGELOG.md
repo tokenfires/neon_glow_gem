@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2026-11-20)
+
+- Sync the CSS with the Rails demo at `6b6e419f11104b7eb376802178ee9b7a5dfe9978`.
+- Add Cherenkov and Nixie palettes (12 total), plus Overdrive intensity (4 total).
+- Include palette typography, hardware displays, era-specific card treatments, and updated component effects.
+- Document font loading, complete runtime palette switching, and CSS-only Nixie usage.
+- Add CI, dependency auditing, and tests of the built distribution.
+
 ## 0.2.0 (2026-02-23)
 
 - 6 new palettes: 80's Retrowave, 90's Grunge, 2000's Y2K, 2010's Social, 2020's Cyberpunk, VFD Display
